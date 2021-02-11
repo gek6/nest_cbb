@@ -7,25 +7,7 @@ var truelogin = "admin";
 var truepwd = "admin123";
 
 var CodeVal = 0;
-Code();
-function Code() {
-    if(canGetCookie == 1){
-        createCode("AdminCode");
-        var AdminCode = getCookieValue("AdminCode");
-        showCheck(AdminCode);
-    }else{
-        showCheck(createCode(""));
-    }
-}
-function showCheck(a) {
-    CodeVal = a;
-    var c = document.getElementById("myCanvas");
-    var ctx = c.getContext("2d");
-    ctx.clearRect(0, 0, 1000, 1000);
-    ctx.font = "80px 'Hiragino Sans GB'";
-    ctx.fillStyle = "#E8DFE8";
-    ctx.fillText(a, 0, 100);
-}
+ 
 $(document).keypress(function (e) {
     // 回车键事件
     if (e.which == 13) {
@@ -105,16 +87,11 @@ layui.use('layer', function () {
             }, 500);
 
             //登陆
-            var JsonData = { login: login, pwd: pwd, code: code };
+            var JsonData = { username: login, password: pwd, code: code };
             //此处做为ajax内部判断
             var url = "";
-            if(JsonData.code.toUpperCase() == CodeVal.toUpperCase()){
-                url = "/login";
-            }else{
-                return
-            }
-
-            AjaxPost(url, JsonData,
+             
+            AjaxPost("/login", JsonData,
                 function () {
                     //ajax加载中
                 },
@@ -124,7 +101,7 @@ layui.use('layer', function () {
                     // setTimeout(() => {
                     //     window.location.href = "/index"
                     // }, 1000);
-                    
+                 
                     setTimeout(function () {
                         console.log(data)
                         $('.authent').show().animate({ right: 90 }, {
@@ -137,24 +114,31 @@ layui.use('layer', function () {
                             queue: false
                         }).addClass('visible');
                         $('.login').removeClass('testtwo'); //平移特效
-                    }, 2000);
+                    }, 1000);
                     setTimeout(function () {
                         console.log(data)
                         $('.authent').hide();
                         $('.login').removeClass('test');
-                        if (data.Status == 'ok') {
+                        if (data.code == 0) {
 
                             //登录成功
                             $('.login div').fadeOut(100);
                             $('.success').fadeIn(1000);
-                            $('.success').html(data.Text);
-                            // window.location.href="paye_319/indexNav.html";
-                            // //跳转操作
+                            $('.success').html('登录成功');
+                            window.location.href = "/index"
+                            
 
                         } else {
-                            layer.msg('账号或密码错误');
+                            if(data.code===401002){
+                                layer.msg('验证码错误');
+                                
+                            }else{
+                                layer.msg('账号或密码错误');
+                            
+                            }
+                            $("#codeImg").click()
                         }
-                    }, 2400);
+                    }, 1400);
                 })
 
         }
