@@ -1,15 +1,15 @@
-import { Body, Controller, Get, Post, Render,Request } from '@nestjs/common';
+import { Body, Controller, Get, Post, Render, Request } from '@nestjs/common';
 import { userInfo } from 'os';
 import { AdminService } from "../../../service/admin/admin.service"
 import { ToolsService } from "../../../service/tools/tools.service"
-@Controller('login')
+@Controller('admin/login')
 export class LoginController {
-    constructor( private adminService:AdminService,private toolsService:ToolsService ){
+    constructor(private adminService: AdminService, private toolsService: ToolsService) {
 
     }
     @Get()
     @Render('admin/login')
-    loginPage(){
+    loginPage() {
 
         return {
 
@@ -17,40 +17,40 @@ export class LoginController {
     }
 
     @Post()
-    async __login(@Body() Body,@Request() req){
+    async __login(@Body() Body, @Request() req) {
         console.log(Body);
         // console.log('缓存中 imgCode ->' ,req.session['imgCode'] )
         // 验证码
-      
-        let username:string = Body.username;
-        let password:string = this.toolsService.MD5(Body.password);
-        let code:string = Body.code;
-        
- 
-        if(!username){
+
+        let username: string = Body.username;
+        let password: string = this.toolsService.MD5(Body.password);
+        let code: string = Body.code;
+
+
+        if (!username) {
             return {
-                code:401000,
-                msg:'缺少参数 username'
+                code: 401000,
+                msg: '缺少参数 username'
             }
         }
-        if(!password){
+        if (!password) {
             return {
-                code:401000,
-                msg:'缺少参数 password'
+                code: 401000,
+                msg: '缺少参数 password'
             }
         }
-        if(!code){
+        if (!code) {
             return {
-                code:401000,
-                msg:'缺少参数 code'
+                code: 401000,
+                msg: '缺少参数 code'
             }
         }
 
-        if(code.toLocaleLowerCase() !== req.session['imgCode'].toLocaleLowerCase()){
+        if (code.toLocaleLowerCase() !== req.session['imgCode'].toLocaleLowerCase()) {
 
             return {
-                code:401002,
-                msg:'验证码错误'
+                code: 401002,
+                msg: '验证码错误'
             }
         }
 
@@ -59,20 +59,20 @@ export class LoginController {
             password
         })
 
-       
-        if(findRes.length){
+
+        if (findRes.length) {
             req.session['userInfo'] = findRes[0]
             return {
-                code:0,
-                msg:'登陆成功'
+                code: 0,
+                msg: '登陆成功'
             }
-        }else{
+        } else {
             return {
-                code:401001,
-                msg:'帐号或密码错误'
+                code: 401001,
+                msg: '帐号或密码错误'
             }
         }
 
-        
+
     }
 }

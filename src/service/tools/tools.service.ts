@@ -1,9 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import * as captcha from "node-svgcaptcha";
-import * as md5 from "md5";
+const captcha = require("node-svgcaptcha");
+
+const md5 = require("md5") ;
 @Injectable()
 export class ToolsService {
+    
 
+    // 生成图片验证码
     createCodeImg(){
        
         var genCaptcha = captcha({
@@ -18,7 +21,7 @@ export class ToolsService {
         return genCaptcha
     }
 
-
+    // MD5加密
     MD5(str:string = ''){
         if(str.length){
             return md5(str)
@@ -26,4 +29,6 @@ export class ToolsService {
             throw new Error('加密字符串为空')
         }
     }
+
+   
 }

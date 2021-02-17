@@ -7,20 +7,23 @@ import { ApiModule } from './module/api/api.module';
 import { MongooseModule } from "@nestjs/mongoose"
 // 导入 权鉴 中间件
 import { AuthMiddleware } from "./middleware/admin/auth.middleware"
-
+import { ApiMiddleware } from "./middleware/token/api.middleware"
 
 @Module({
 
 
   imports: [AdminModule, DefaultModule, ApiModule, MongooseModule.forRoot("mongodb://82.156.165.162:27017/nest_cbb")],
-
-
+ 
 
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthMiddleware)
-      .forRoutes({ path: '*', method: RequestMethod.ALL });
+      .forRoutes({ path: 'admin*', method: RequestMethod.ALL });
+    
+      consumer
+      .apply(ApiMiddleware)
+      .forRoutes({ path: 'api*', method: RequestMethod.ALL });
   }
 }

@@ -1,9 +1,11 @@
 import { userInfo } from 'os';
 import { Injectable, NestMiddleware } from '@nestjs/common';
 
+// 中间件 允许用过的白名单
+// 在根模块中 已经限制 匹配 以admin/ 开头的 路由地址 
 const whiteList = [
-  "/login",
-  "/account/getCode"
+  "/admin/login",
+  "/admin/account/getCode"
 ]
 
 
@@ -18,7 +20,7 @@ export class AuthMiddleware implements NestMiddleware {
       if(userInfo){
         next()
       }else{
-        res.redirect("/login")
+        res.redirect("/admin/login")
       }
     }
     

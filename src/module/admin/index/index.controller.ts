@@ -1,7 +1,7 @@
 import { userInfo } from 'os';
 import { Controller, Get, Render,Request } from '@nestjs/common';
 
-@Controller('index')
+@Controller('admin/index')
 export class IndexController {
 
 

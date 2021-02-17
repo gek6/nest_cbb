@@ -3,7 +3,7 @@ import { ToolsService } from "../../../service/tools/tools.service"
 import { AdminService } from "../../../service/admin/admin.service"
 
 
-@Controller('account')
+@Controller('admin/account')
 export class AccountController {
 
     constructor(private ToolsService: ToolsService,private adminService:AdminService) { }

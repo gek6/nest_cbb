@@ -91,7 +91,7 @@ layui.use('layer', function () {
             //此处做为ajax内部判断
             var url = "";
              
-            AjaxPost("/login", JsonData,
+            AjaxPost("/admin/login", JsonData,
                 function () {
                     //ajax加载中
                 },
@@ -125,7 +125,7 @@ layui.use('layer', function () {
                             $('.login div').fadeOut(100);
                             $('.success').fadeIn(1000);
                             $('.success').html('登录成功');
-                            window.location.href = "/index"
+                            window.location.href = "/admin/index"
                             
 
                         } else {
