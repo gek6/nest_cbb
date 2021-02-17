@@ -8,45 +8,19 @@ export class UserController {
     constructor
         (
             private userService: UserService,
-            private jwtAuthService: JwtAuthService
-        ) { }
+
+    ) { }
 
     @Post("register")
     async __register(@Body() postBody) {
         console.log('进入 register 控制器');
-
-
         let code: string = postBody['code'];
-       
- 
         // 如果code 不存在 给出提示
         if (!code) {
             return {
                 code: -1,
                 msg: '缺少参数'
             }
-        }
-
-        // 这里拿到用户的openid
-        let openid = 'owB4742qaKOgi_w-Vc35qldiIFOY';
-        // 去数据库中查询
-        let res = await this.userService.find({
-            openid
-        })
-        if(res.length){
-            // 用户存在
-            console.log('用户存在');
-            
-        }else{
-            // 用户不存在
-            console.log('用户不存在');
-            this.userService.add({
-                openid,
-            })
-        }
-        
-        return {
-
         }
         let loginRes = await this.userService.wxmpDoLogin(code);
 
@@ -61,15 +35,51 @@ export class UserController {
                 openid
             })
 
-            console.log(res)
-            // 如果有记录，则加密用户主键 并更新表中 sessionkey 返回加密后的token
-            // 如果没有记录，则创建一条新记录，并且同上
-            return {
-                code: 1,
-                msg: 'ok'
-            };
+            if (res.length) {
+                // 用户存在
+                console.log('用户存在');
+                let token = await this.userService.createToken(openid)
+                return {
+                    code: 1,
+                    msg: 'ok',
+                    token: token
+                }
+
+            } else {
+                // 用户不存在
+                console.log('用户不存在');
+                let token = await this.userService.add({
+                    openid,
+                })
+
+                if (token) {
+                    // 保存成功
+                    return {
+                        code: 1,
+                        msg: 'ok',
+                        token: token
+                    }
+                }
+            }
+           
+       
         }
 
     }
 
+    @Get("info")
+    async __getInfo( @Request() req )
+    {
+
+        let openid = req.tokenInfo['openid'];
+        let user = await this.userService.findByOpenid(openid)
+
+        return {
+            code:1,
+            data:user
+        }
+        // this.userService.find({
+        //     openid
+        // })
+    }
 }
