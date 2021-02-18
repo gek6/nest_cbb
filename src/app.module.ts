@@ -13,7 +13,10 @@ import { ApiMiddleware } from "./middleware/token/api.middleware"
 
 
   imports: [AdminModule, DefaultModule, ApiModule, MongooseModule.forRoot("mongodb://82.156.165.162:27017/nest_cbb")],
- 
+
+
+
+
 
 })
 export class AppModule implements NestModule {
@@ -21,7 +24,7 @@ export class AppModule implements NestModule {
     consumer
       .apply(AuthMiddleware)
       .forRoutes({ path: 'admin*', method: RequestMethod.ALL });
-    
+
       consumer
       .apply(ApiMiddleware)
       .forRoutes({ path: 'api*', method: RequestMethod.ALL });
