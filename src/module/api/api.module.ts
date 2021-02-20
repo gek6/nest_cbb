@@ -1,29 +1,51 @@
 import { Module } from '@nestjs/common';
-
-// 在定义 schema后 在控制器所在 module 中定义 
-import { UserSchema } from "../../schemas/user.schema";
+import { JwtModule } from '@nestjs/jwt';// 引入 JWT
 import { MongooseModule } from '@nestjs/mongoose';
+
+
+// schema
+import { UserSchema } from '../../schemas/user.schema';
+import { AddressSchema } from '../../schemas/address.schema';
+import { PetSchema } from "../../schemas/pet.schema"
+import { WorkerSchema } from "../../schemas/worker.schema"
+// 服务
+import { UserService } from '../../service/user/user.service';
+import { AddressService } from '../../service/address/address.service';
+import { JwtAuthService } from '../../service/jwt-auth/jwt-auth.service';
+import { PetService } from "../../service/pet/pet.service"
+import { WorkerService } from "../../service/worker/worker.service"
+
+// 控制器
+import { AddressController } from './wxmp/address/address.controller';
+import { PetController } from './wxmp/pet/pet.controller';
+import { WorkerController } from './wxmp/worker/worker.controller';
 import { UserController } from './wxmp/user/user.controller';
-// 引入服务
-import { UserService } from "../../service/user/user.service"
-import { JwtAuthService } from "../../service/jwt-auth/jwt-auth.service"
-// 引入 JWT
-import { JwtModule } from '@nestjs/jwt';
+import { SignController } from './qiniu/sign/sign.controller';
+
 @Module({
-    imports: [
-        MongooseModule.forFeature([{ name: "User", schema: UserSchema, collection: "user" }])
-        ,JwtModule.register({
-            secret: 'asdasda',
-            signOptions: { expiresIn: '6000s' },
-          }),
-    ],
-    providers:[
-        // 在这注册服务
-        UserService,
-        JwtAuthService
-    ],
-    exports:[JwtAuthService],
-    controllers: [UserController]
+  imports: [
+    MongooseModule.forFeature([
+      { name: 'User', schema: UserSchema, collection: 'user' },
+      { name: 'Address', schema: AddressSchema, collection: 'address' },
+      { name: 'Pet', schema: PetSchema, collection: 'pet' },
+      { name: 'Worker', schema: WorkerSchema, collection: 'worker' },
+    ])
+    , JwtModule.register({
+      secret: 'lane-yb',
+      signOptions: { expiresIn: (60 * 60 * 24 * 30) + 's' },
+    }),
+  ],
+  providers: [
+    // 在这注册服务
+    UserService,
+    JwtAuthService,
+    AddressService,
+    PetService,
+    WorkerService
+  ],
+  exports: [JwtAuthService],
+  controllers: [UserController, AddressController, PetController, WorkerController, SignController],
 })
 
-export class ApiModule {}
+export class ApiModule {
+}

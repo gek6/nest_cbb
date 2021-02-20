@@ -3,15 +3,25 @@
         <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
         <ul class="layui-nav layui-nav-tree" lay-filter="test">
             <li class="layui-nav-item layui-this"><a href="">首页</a></li>
-            
+
             <li class="layui-nav-item">
                 <a href="javascript:;">账号管理</a>
                 <dl class="layui-nav-child">
                     <dd><a href="/admin/account" target="contentBody">账号列表</a></dd>
-                    <dd><a href="/admin/account/add" target="contentBody">新增账号</a></dd>
-               
+                    <!--<dd><a href="/admin/account/add" target="contentBody">新增账号</a></dd>-->
+
                 </dl>
             </li>
+
+            <li class="layui-nav-item">
+                <a href="javascript:;">用户管理</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="/admin/user" target="contentBody">小程序用户列表</a></dd>
+                    <!--<dd><a href="/admin/account/add" target="contentBody">新增账号</a></dd>-->
+
+                </dl>
+            </li>
+
             <!-- <li class="layui-nav-item"><a href="">云市场</a></li>
             <li class="layui-nav-item"><a href="">发布商品</a></li> -->
         </ul>
