@@ -2,33 +2,35 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
-export class AddressService {
+export class PetService {
+
   constructor(
     @InjectModel('Address') private addressModel,
+    @InjectModel('Pet') private petModel,
   ) {
 
   }
 
   async add(uid, rowJson) {
     rowJson.uid = uid;
-    let address = new this.addressModel(rowJson);
+    let address = new this.petModel(rowJson);
     let handleRes = await address.save();
     console.log(handleRes);
     return handleRes;
   }
 
   async delete(id) {
-    return this.addressModel.findByIdAndDelete(id);
+    return this.petModel.findByIdAndDelete(id);
   }
 
   async edit(id, AddressAddDto) {
-    return this.addressModel.findByIdAndUpdate(id, AddressAddDto);
+    return this.petModel.findByIdAndUpdate(id, AddressAddDto);
   }
 
   // 分页查询 列表
   async list(queryJson) {
 
-    return this.addressModel.paginate(
+    return this.petModel.paginate(
       {},
       {
         page: Number(queryJson.pageNum),

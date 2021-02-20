@@ -1,7 +1,8 @@
 import { userInfo } from 'os';
 import { Controller, Get, Render,Request } from '@nestjs/common';
+import { AdminUrlName } from "../../../../config/admin.config"
 
-@Controller('admin/index')
+@Controller(`${AdminUrlName}/index`)
 export class IndexController {
 
 

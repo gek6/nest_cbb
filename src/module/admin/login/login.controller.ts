@@ -1,12 +1,13 @@
 import { Body, Controller, Get, Post, Render, Request } from '@nestjs/common';
-import { userInfo } from 'os';
 import { AdminService } from "../../../service/admin/admin.service"
 import { ToolsService } from "../../../service/tools/tools.service"
-@Controller('admin/login')
+import { AdminUrlName } from "../../../../config/admin.config"
+@Controller(`${AdminUrlName}/login`)
 export class LoginController {
-    constructor(private adminService: AdminService, private toolsService: ToolsService) {
-
-    }
+    constructor(
+        private adminService: AdminService,
+        private toolsService: ToolsService
+    ) { }
     @Get()
     @Render('admin/login')
     loginPage() {
@@ -15,17 +16,12 @@ export class LoginController {
 
         }
     }
-
     @Post()
     async __login(@Body() Body, @Request() req) {
-        console.log(Body);
-        // console.log('缓存中 imgCode ->' ,req.session['imgCode'] )
-        // 验证码
 
         let username: string = Body.username;
         let password: string = this.toolsService.MD5(Body.password);
         let code: string = Body.code;
-
 
         if (!username) {
             return {
@@ -45,7 +41,6 @@ export class LoginController {
                 msg: '缺少参数 code'
             }
         }
-
         if (code.toLocaleLowerCase() !== req.session['imgCode'].toLocaleLowerCase()) {
 
             return {

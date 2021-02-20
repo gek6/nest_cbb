@@ -1,18 +1,25 @@
-import { Body, Controller, Get, Post, Request} from '@nestjs/common';
+import { Body, Controller, Get, Post, Request } from '@nestjs/common';
 import { UserService } from '../../../../service/user/user.service';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth } from "@nestjs/swagger"
+import { UserInfoDto , LoginDto } from "./dto"
 
 
 @Controller('api/user')
+@ApiTags('微信小程序登录')
 export class UserController {
   constructor
-  (
-    private userService: UserService,
+    (
+      private userService: UserService,
   ) {
   }
 
   @Post('register')
-  async __register(@Body() postBody) {
-    console.log('进入 register 控制器');
+  @ApiOperation({
+    summary: "通过code登录",
+  })
+
+  async __register(@Body() postBody: LoginDto) {
     let code: string = postBody['code'];
     // 如果code 不存在 给出提示
     if (!code) {
@@ -67,9 +74,13 @@ export class UserController {
   }
 
   @Get('info')
+  @ApiOperation({
+    summary: "获取用户信息",
+  })
+  @ApiBearerAuth()
   async __getInfo(@Request() req) {
 
-    let openid = req.tokenInfo['openid'];
+    let openid: string = req.tokenInfo['openid'];
     let user = await this.userService.findByOpenid(openid);
 
     return {
@@ -77,20 +88,21 @@ export class UserController {
       msg: 'ok',
       data: user,
     };
-    // this.userService.find({
-    //     openid
-    // })
   }
 
   @Post('update')
-  async __updateInfo(@Body() postData , @Request() req) {
-    console.log(postData);
+  @ApiOperation({
+    summary: "更新用户信息",
+  })
+  @ApiBearerAuth()
+  async __updateInfo(@Body() postData: UserInfoDto, @Request() req) {
+ 
     let openid = req.tokenInfo['openid'];
-    let updateRes = await this.userService.updateByOpenid(openid,postData);
+    let updateRes = await this.userService.updateByOpenid(openid, postData);
     return {
-      code:1,
-      msg:'ok',
-      data:updateRes
+      code: 1,
+      msg: 'ok',
+      data: updateRes
     }
   }
 }

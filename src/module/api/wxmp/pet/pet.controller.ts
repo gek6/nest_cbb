@@ -1,28 +1,20 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query, Request } from '@nestjs/common';
-import { AddressService } from '../../../../service/address/address.service';
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { UserService } from '../../../../service/user/user.service';
-import {
-  ApiBearerAuth,
-  ApiOperation,
-  ApiParam,
-  ApiQuery,
-  ApiTags,
-} from '@nestjs/swagger';
-import { AddressDto } from './addressDto';
-
-@Controller('api/address')
-@ApiTags('地址管理')
+import { PetService } from '../../../../service/pet/pet.service';
+import { PetDto } from "./petDto"
+@Controller('api/pet')
+@ApiTags('宠物管理')
 @ApiBearerAuth()
-export class AddressController {
+export class PetController {
   constructor(
-    private addressService: AddressService,
     private userService: UserService,
+    private petService:PetService
   ) {
   }
-
   @Get()
   @ApiOperation({
-    summary: '获取地址列表',
+    summary: '获取宠物列表',
   })
   @ApiQuery({
     name: 'pageNum',
@@ -40,7 +32,7 @@ export class AddressController {
     @Query('pageNum') pageNum: number = 1,
     @Query('pageSize') pageSize: number = 10,
   ) {
-    let addressList = await this.addressService.list({
+    let list = await this.petService.list({
       pageNum,
       pageSize,
     });
@@ -48,23 +40,18 @@ export class AddressController {
     return {
       code: 1,
       msg: 'ok',
-      data: addressList,
+      data: list,
     };
   }
 
-
-
-
-
-
   @Post()
   @ApiOperation({
-    summary: '新增地址',
+    summary: '新增宠物',
   })
-  async __add(@Body() AddressAddDto: AddressDto, @Request() req) {
+  async __add(@Body() postData:PetDto, @Request() req) {
     let openid: string = req.tokenInfo['openid'];
     let user = await this.userService.findByOpenid(openid);
-    let address = await this.addressService.add(user._id, AddressAddDto);
+    let address = await this.petService.add(user._id, postData);
     return {
       code: 1,
       msg: 'ok',
@@ -72,25 +59,19 @@ export class AddressController {
     };
   }
 
-
-
-
-
-
-
   @Put(':id')
+  @ApiOperation({
+    summary: '编辑宠物',
+  })
   @ApiParam({
     name: 'id',
-    description: '地址ID（_id）',
-  })
-  @ApiOperation({
-    summary: '编辑地址',
+    description: '宠物ID（_id）',
   })
   async __update(
     @Param('id') id,
-    @Body() AddressAddDto: AddressDto,
+    @Body() postData:PetDto,
   ) {
-    await this.addressService.edit(id, AddressAddDto);
+    await this.petService.edit(id, postData);
 
     return {
       code: 1,
@@ -98,32 +79,21 @@ export class AddressController {
     };
   }
 
-
-
-
-
-
-
   @Delete(':id')
+  @ApiOperation({
+    summary: '删除宠物',
+  })
   @ApiParam({
     name: 'id',
-    description: '地址ID（_id）',
-  })
-  @ApiOperation({
-    summary: '删除地址',
+    description: '宠物ID（_id）',
   })
   async __delete(
     @Param('id') id,
   ) {
-    await this.addressService.delete(id);
+    await this.petService.delete(id);
     return {
       code: 1,
       msg: 'ok',
     };
   }
-
-
-
-
-
 }

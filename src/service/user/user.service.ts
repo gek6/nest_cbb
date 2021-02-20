@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import axios from 'axios';
-import * as wxConfig from '../../../config/weixin.config.js';
+import {APPID,SECRET } from '../../../config/weixin.config';
 import { JwtAuthService } from '../jwt-auth/jwt-auth.service';
 
 @Injectable()
@@ -14,8 +14,7 @@ export class UserService {
 
   // 通过微信服务器登录
   async wxmpDoLogin(code) {
-    const APPID = wxConfig.APPID;
-    const SECRET = wxConfig.SECRET;
+  
     let wxUrl = `https://api.weixin.qq.com/sns/jscode2session?appid=${APPID}&secret=${SECRET}&js_code=${code}&grant_type=authorization_code`;
 
 
@@ -30,7 +29,7 @@ export class UserService {
   }
 
   // 查询单个用户
-  async findByOpenid(openid) {
+  async findByOpenid(openid:string) {
     return await this.userModel.findOne({
       openid,
     });
@@ -70,5 +69,16 @@ export class UserService {
       new: true
     });
 
+  }
+
+  // 分页查询 用户列表
+  async list(queryJson){
+    return this.userModel.paginate(
+      {},
+      {
+        page: Number(queryJson.pageNum),
+        limit: Number(queryJson.pageSize),
+      },
+    );
   }
 }

@@ -22,7 +22,7 @@ export class ApiMiddleware implements NestMiddleware {
       next();
       return;
     }
-
+    // console.log(req.headers);
     // 检测接口中是否携带token  authorization:
     let token = req.headers['Authorization'] || req.headers['authorization'] || '';
 
@@ -30,17 +30,18 @@ export class ApiMiddleware implements NestMiddleware {
       // console.log('校验token');
       try {
         this.jwtAuthService.verifyToken(token);
+        req.tokenInfo = this.jwtAuthService.decodeToken(token);
+        next();
       } catch (err) {
-        // res.json({
-        //   code: 401002,
-        //   msg: 'token失效',
-        // });
+        res.json({
+          code: 401002,
+          msg: 'token失效',
+        });
       }
 
       // console.log(tokenInfo);
       // 解析token  并且把 解析后的用户ID 挂载到 当前req实例上
-      req.tokenInfo = this.jwtAuthService.decodeToken(token);
-      next();
+
     } else {
       res.json({
         code: 401001,

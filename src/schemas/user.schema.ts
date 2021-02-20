@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
-
-export const UserSchema = new mongoose.Schema({
+import * as mongoosePaginate  from "mongoose-paginate"
+let userSchema = new mongoose.Schema({
   // 微信小程序openid
   'openid': String,
   // 用户昵称
@@ -45,3 +45,5 @@ export const UserSchema = new mongoose.Schema({
     default: Date.now,
   },
 });
+userSchema.plugin(mongoosePaginate)
+export const UserSchema = userSchema
