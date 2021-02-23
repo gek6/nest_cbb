@@ -16,6 +16,11 @@ export class PetDto {
   gender:number;
 
   @ApiModelProperty({
+    description:'品种',
+    example:'虎斑'
+  })
+  pinzhong:string;
+  @ApiModelProperty({
     description:'是否绝育 1是 2否',
     example:1
   })

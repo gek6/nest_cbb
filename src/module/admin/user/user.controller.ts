@@ -1,8 +1,8 @@
 import { Controller, Get,Render,Query } from '@nestjs/common';
 
 import { UserService } from 'src/service/user/user.service';
-
-@Controller('admin/user')
+import { AdminUrlName } from "../../../../config/admin.config"
+@Controller(`${AdminUrlName}/user`)
 export class UserController {
   constructor(
     private userService:UserService
@@ -19,16 +19,21 @@ export class UserController {
 
   @Get('user-list-json')
   async __userListApi(
-    @Query('pageNum') pageNum: number = 1,
-    @Query('pageSize') pageSize: number = 10,
+    @Query('page') pageNum: number = 1,
+    @Query('limit') pageSize: number = 10,
   ){
 
-    await this.userService.list({
+    let list = await this.userService.list({
       pageNum,
       pageSize
     })
+
+    console.log(list);
+    
     return {
-      
+      code:0,
+      msg:'ok',
+      data:list
     }
   }
 }

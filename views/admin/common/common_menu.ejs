@@ -2,28 +2,47 @@
     <div class="layui-side-scroll">
         <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
         <ul class="layui-nav layui-nav-tree" lay-filter="test">
-            <li class="layui-nav-item layui-this"><a href="">首页</a></li>
+            <li class="layui-nav-item layui-this"><a href=""> <span class="layui-icon layui-icon-home"></span> 首页</a></li>
 
             <li class="layui-nav-item">
-                <a href="javascript:;">账号管理</a>
+                <a href="javascript:;"> <span class="layui-icon layui-icon-auz"></span> 账号管理</a>
                 <dl class="layui-nav-child">
-                    <dd><a href="/admin/account" target="contentBody">账号列表</a></dd>
-                    <!--<dd><a href="/admin/account/add" target="contentBody">新增账号</a></dd>-->
-
+                    <dd><a href="/<%= AdminUrlName %>/account" target="contentBody">  账号列表</a></dd>
                 </dl>
             </li>
 
             <li class="layui-nav-item">
-                <a href="javascript:;">用户管理</a>
+                <a href="javascript:;"><span class="layui-icon layui-icon-user"></span> 用户管理</a>
                 <dl class="layui-nav-child">
-                    <dd><a href="/admin/user" target="contentBody">小程序用户列表</a></dd>
-                    <!--<dd><a href="/admin/account/add" target="contentBody">新增账号</a></dd>-->
-
+                    <dd><a href="/<%= AdminUrlName %>/user" target="contentBody">小程序用户列表</a></dd>
                 </dl>
             </li>
 
-            <!-- <li class="layui-nav-item"><a href="">云市场</a></li>
-            <li class="layui-nav-item"><a href="">发布商品</a></li> -->
+            <li class="layui-nav-item">
+                <a href="javascript:;"><span class="layui-icon layui-icon-list"></span> 订单管理</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="/<%= AdminUrlName %>/order" target="contentBody">订单列表</a></dd>
+                </dl>
+            </li>
+
+            <li class="layui-nav-item">
+                <a href="javascript:;"><span class="layui-icon layui-icon-fonts-clear"></span> 铲屎官管理</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="/<%= AdminUrlName %>/worker" target="contentBody">铲屎官列表</a></dd>
+                    <dd><a href="/<%= AdminUrlName %>/worker/check" target="contentBody">审核</a></dd>
+                </dl>
+            </li>
+
+            <li class="layui-nav-item"><a href="/<%= AdminUrlName %>/banner" target="contentBody"><span class="layui-icon layui-icon-carousel"></span> 轮播图管理</a></li>
+            
+            <li class="layui-nav-item">
+                <a href="javascript:;"><span class="layui-icon layui-icon-set"></span> 设置</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="/<%= AdminUrlName %>/system/index" target="contentBody">系统设置</a></dd>
+                </dl>
+            </li>
+
+ 
         </ul>
     </div>
 </div>

@@ -2,9 +2,17 @@ import * as mongoose from 'mongoose';
 import * as mongoosePaginate from "mongoose-paginate"
 
 let workerSchema = new mongoose.Schema({
-    'service_distance': String,// 服务距离
+    // 服务距离 单位米
+    'service_distance': {
+        type:Number,
+        default:20000
+    },
     'service_date_type': String, // 服务日期类型
-    'service_status': String, // 服务状态
+    // 服务状态 0关闭 1开启
+    'service_status': {
+        type:Number,
+        default:0
+    }, 
     'service_time_range': String, // 服务日期范围
     'ext_service': String,// 额外服务
     'name': String,//真实姓名

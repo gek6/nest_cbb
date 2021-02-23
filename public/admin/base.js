@@ -13,7 +13,7 @@ let app = {
     },
     resize(){
         let height = $(window).height();
-        let bodyHeight = height - 90 - 40;
+        let bodyHeight = height -90+26;
         $("#contentBody").height(bodyHeight)
     }
 }

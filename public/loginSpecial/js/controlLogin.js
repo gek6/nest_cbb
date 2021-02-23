@@ -114,7 +114,7 @@ layui.use('layer', function () {
                             queue: false
                         }).addClass('visible');
                         $('.login').removeClass('testtwo'); //平移特效
-                    }, 1000);
+                    }, 100);
                     setTimeout(function () {
                         console.log(data)
                         $('.authent').hide();
@@ -138,7 +138,7 @@ layui.use('layer', function () {
                             }
                             $("#codeImg").click()
                         }
-                    }, 1400);
+                    }, 200);
                 })
 
         }

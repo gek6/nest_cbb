@@ -1,31 +1,57 @@
 <%- include('../common/common_header.ejs'); %>
-   <div>
-      <table class="layui-hide" id="accountList"></table>
+   <div style="background-color: #ffffff;padding: 20px;">
+      <fieldset class="layui-elem-field layui-field-title">
+         <legend>用户列表</legend>
+     </fieldset>
+      <table class="layui-hide" id="tableDom"></table>
 
       <div id="tableTools" style="display: none;">
          <button class="layui-btn layui-btn-sm">禁用</button>
       </div>
    </div>
+   <style>
+      td .layui-table-cell {
+         height: 60px;
+         line-height: 60px;
+      }
+   </style>
    <script>
       layui.use('table', function () {
          var table = layui.table;
-        
+
          table.render({
-            elem: '#accountList'
-            , url: '/admin/account/user-list-json'
+            elem: '#tableDom'
+            , title: "用户列表"
+            , url: '/admin/user/user-list-json'
+            , parseData: function (res) {
+
+               return {
+                  code: res.code,
+                  msg: res.msg,
+                  data: res.data.docs,
+                  count: res.data.total
+               }
+            }
+            , id: "userTable"
             , cols: [[
-               { field: '_id', width: 240, title: 'ID',  }
-               , { field: 'username', width: 160, title: '用户名',sort: true }
-               , { field: 'password', width: 200, title: '密码'}
-               , { field: 'email', width: 200, title: '邮箱'}
-               , { field: 'mobile', width: 200, title: '手机号'}
-               , { field: 'status', width: 200, title: '状态'}
-               
-               , {fixed: 'right', title:'操作', toolbar: '#tableTools', width:150}
+               { field: '_id', width: 240, title: 'ID', }
+               , {
+                  field: 'avatarUrl', title: '微信头像', width: 100
+                  , templet: function (d) {
+                     return ` <img style="width:55px;height:55px;" src="${d.avatarUrl}" alt="">`
+                  }
+               }
+               , { field: 'nickName', width: 160, title: '昵称', sort: true }
+               , { field: 'money', width: 100, title: '账户余额' }
+
+
+               , { fixed: 'right', title: '操作', toolbar: '#tableTools' }
             ]]
             , page: true
-            , height:$(document).height()-20
-            ,line:'line'
+            , height: $(document).height()-110
+            , line: 'line'
          });
+
+         table.resize('userTable');
       });
    </script>

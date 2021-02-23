@@ -5,6 +5,11 @@ import { AppModule } from './app.module';
 import { NestExpressApplication } from "@nestjs/platform-express";
 import *  as  cookieParser from "cookie-parser";
 import * as session from 'express-session';
+
+const bodyParser = require('body-parser');
+require('body-parser-xml')(bodyParser);
+
+
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   // 配置静态服务目录
@@ -44,7 +49,7 @@ async function bootstrap() {
     .build()
   const document = SwaggerModule.createDocument(app,options);
   SwaggerModule.setup('api-docs',app,document);
-
+  app.use(bodyParser.xml());
   await app.listen(3000);
 }
 bootstrap();

@@ -9,6 +9,9 @@ let petSchema = new mongoose.Schema({
     type: Number,
     default: 1,
   },
+  'pinzhong':{
+    type:String
+  },
   // 是否绝育 1是 2否
   'jueyu': {
     type: Number,

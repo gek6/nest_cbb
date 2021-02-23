@@ -10,7 +10,8 @@ export class IndexController {
     @Render("admin/index")
     indexPage(@Request() req){
         return {
-            userInfo:req.session['userInfo']
+            userInfo:req.session['userInfo'],
+            AdminUrlName
         }
-    }
+    } 
 }

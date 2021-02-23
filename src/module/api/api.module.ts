@@ -21,6 +21,7 @@ import { PetController } from './wxmp/pet/pet.controller';
 import { WorkerController } from './wxmp/worker/worker.controller';
 import { UserController } from './wxmp/user/user.controller';
 import { SignController } from './qiniu/sign/sign.controller';
+import { PayController } from './wxmp/pay/pay.controller';
 
 @Module({
   imports: [
@@ -44,7 +45,7 @@ import { SignController } from './qiniu/sign/sign.controller';
     WorkerService
   ],
   exports: [JwtAuthService],
-  controllers: [UserController, AddressController, PetController, WorkerController, SignController],
+  controllers: [UserController, AddressController, PetController, WorkerController, SignController, PayController],
 })
 
 export class ApiModule {

@@ -3,6 +3,7 @@ import { JwtAuthService } from '../../service/jwt-auth/jwt-auth.service';
 
 const whiteList = [
   '/api/user/register',
+  '/api/qiniu/sign'
 ];
 
 @Injectable()

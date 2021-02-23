@@ -1,11 +1,11 @@
 import { Controller, Get, Render } from '@nestjs/common';
-
-@Controller('admin/welcome')
+import { AdminUrlName } from "../../../../config/admin.config"
+@Controller(`${AdminUrlName}/welcome`)
 export class WelcomeController {
 
     @Get()
     @Render("admin/welcome")
-    welcomePage(){
+    welcomePage() {
 
         return {}
     }

@@ -8,10 +8,12 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AuthMiddleware } from './middleware/admin/auth.middleware';
 import { ApiMiddleware } from './middleware/token/api.middleware';
 import { PhoneMsgService } from './service/phone-msg/phone-msg.service';
+import { CallbackController } from './module/callback/callback.controller';
 
 @Module({
   imports: [AdminModule, DefaultModule, ApiModule, MongooseModule.forRoot('mongodb://82.156.165.162:27017/nest_cbb', { 'useFindAndModify': false })],
   providers: [PhoneMsgService],
+  controllers: [CallbackController],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

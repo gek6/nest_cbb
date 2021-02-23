@@ -1,7 +1,7 @@
-import { Body, Controller, Get, Post, Render, Request } from '@nestjs/common';
+import { Body, Controller, Get, Post, Render, Request,Response } from '@nestjs/common';
 import { AdminService } from "../../../service/admin/admin.service"
 import { ToolsService } from "../../../service/tools/tools.service"
-import { AdminUrlName } from "../../../../config/admin.config"
+import { AdminUrlName , imgCodeIsOpen} from "../../../../config/admin.config"
 @Controller(`${AdminUrlName}/login`)
 export class LoginController {
     constructor(
@@ -35,19 +35,23 @@ export class LoginController {
                 msg: '缺少参数 password'
             }
         }
-        if (!code) {
-            return {
-                code: 401000,
-                msg: '缺少参数 code'
+        if(imgCodeIsOpen){
+            if (!code) {
+                return {
+                    code: 401000,
+                    msg: '缺少参数 code'
+                }
             }
-        }
-        if (code.toLocaleLowerCase() !== req.session['imgCode'].toLocaleLowerCase()) {
+            if (code.toLocaleLowerCase() !== req.session['imgCode'].toLocaleLowerCase()) {
 
-            return {
-                code: 401002,
-                msg: '验证码错误'
+                return {
+                    code: 401002,
+                    msg: '验证码错误'
+                }
             }
         }
+        
+        
 
         let findRes = await this.adminService.find({
             username,
@@ -69,5 +73,14 @@ export class LoginController {
         }
 
 
+    }
+
+    @Get("out")
+    async __logout( @Request() req , @Response() res){
+
+        req.session['userInfo'] = '';
+
+        res.redirect(`/${AdminUrlName}/login`)
+        
     }
 }

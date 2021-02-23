@@ -39,14 +39,17 @@ export class AddressController {
   async __list(
     @Query('pageNum') pageNum: number = 1,
     @Query('pageSize') pageSize: number = 10,
+    @Request() req
   ) {
+    let openid = req.tokenInfo['openid'];
+    let user = await this.userService.findByOpenid(openid)
     let addressList = await this.addressService.list({
       pageNum,
       pageSize,
-    });
+    },user._id);
 
     return {
-      code: 1,
+      code: 0,
       msg: 'ok',
       data: addressList,
     };
@@ -66,7 +69,7 @@ export class AddressController {
     let user = await this.userService.findByOpenid(openid);
     let address = await this.addressService.add(user._id, AddressAddDto);
     return {
-      code: 1,
+      code: 0,
       msg: 'ok',
       data: address,
     };
@@ -93,7 +96,7 @@ export class AddressController {
     await this.addressService.edit(id, AddressAddDto);
 
     return {
-      code: 1,
+      code: 0,
       msg: 'ok',
     };
   }
@@ -117,7 +120,7 @@ export class AddressController {
   ) {
     await this.addressService.delete(id);
     return {
-      code: 1,
+      code: 0,
       msg: 'ok',
     };
   }

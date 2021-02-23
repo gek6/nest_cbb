@@ -1,0 +1,95 @@
+<%- include('../common/common_header.ejs'); %>
+    <div style="background-color: #ffffff;padding: 20px;">
+        <fieldset class="layui-elem-field layui-field-title">
+            <legend>铲屎官审核</legend>
+        </fieldset>
+        <table class="layui-hide" id="tableDom" lay-filter="checkTable"></table>
+        <div id="tableTools" style="display: none;">
+           
+            <button class="layui-btn layui-btn-sm" lay-event="check">审批</button>
+        </div>
+    </div>
+
+    <script>
+       window.tableInit = function  (){
+            layui.use('table', function () {
+            var table = layui.table;
+
+            table.render({
+                elem: '#tableDom'
+                , title: "铲屎官列表"
+                , url: '/admin/worker/worker-list-json'
+                , parseData: function (res) {
+
+                    return {
+                        code: res.code,
+                        msg: res.msg,
+                        data: res.data.docs,
+                        count: res.data.total
+                    }
+                }
+                , id: "userTable"
+                , cols: [[
+                    { field: '_id', width: 240, title: 'ID', }
+                    , { field: 'name', width: 100, title: '姓名', sort: true }
+                    , { field: 'telephone', width: 160, title: '手机号' }
+                    , { field: 'wx_number', width: 160, title: '微信号' }
+                    , {
+                        field: 'status', width: 100, title: '状态', templet: function (d) {
+                            let text = ""
+                            console.log(d)
+                            // 0 待审批 1 驳回 2 通过
+                            switch (d.status) {
+                                case 0:
+                                    text = "待审批"
+                                    break;
+                                case 1:
+                                    text = "驳回"
+                                    break;
+                                case 2:
+                                    text = "通过"
+                                    break;
+                                default:
+                                    text = "未知"
+                                    break;
+                            }
+
+                            return text
+                        }
+                    }
+
+                    , { fixed: 'right', title: '操作', toolbar: '#tableTools' }
+                ]]
+                // ,toolbar: '#tableTools'
+                , page: true
+                , height: $(document).height() - 110
+                , line: 'line'
+            });
+            table.on('tool(checkTable)', function (obj) {
+
+                switch (obj.event) {
+                    case "check":
+                        console.log('审批');
+                        let layIndex = layer.open({
+                            type: 2,
+                            resize: true,
+                            maxmin: true,
+                            area: ['80vw', '90vh'],
+                            title: '铲屎官审核',
+                         
+                            content: '/admin/worker/check/detail/' + obj.data._id //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+                        });
+                        window.localStorage.setItem("check-detail-layer-index",layIndex)
+
+
+                        break;
+
+                    default:
+                        break;
+                }
+            });
+            table.resize('userTable');
+        });
+        }
+        tableInit();
+    </script>

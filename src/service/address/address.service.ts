@@ -26,10 +26,13 @@ export class AddressService {
   }
 
   // 分页查询 列表
-  async list(queryJson) {
-
+  async list(queryJson,uid?:string) {
+    let query = {};
+    if(uid){
+      query['uid'] = uid;
+    }
     return this.addressModel.paginate(
-      {},
+      query,
       {
         page: Number(queryJson.pageNum),
         limit: Number(queryJson.pageSize),

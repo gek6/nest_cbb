@@ -46,7 +46,7 @@ export class UserController {
         console.log('用户存在');
         let token = await this.userService.createToken(openid);
         return {
-          code: 1,
+          code: 0,
           msg: 'ok',
           token: token,
         };
@@ -61,7 +61,7 @@ export class UserController {
         if (token) {
           // 保存成功
           return {
-            code: 1,
+            code: 0,
             msg: 'ok',
             token: token,
           };
@@ -84,7 +84,7 @@ export class UserController {
     let user = await this.userService.findByOpenid(openid);
 
     return {
-      code: 1,
+      code: 0,
       msg: 'ok',
       data: user,
     };
@@ -100,7 +100,7 @@ export class UserController {
     let openid = req.tokenInfo['openid'];
     let updateRes = await this.userService.updateByOpenid(openid, postData);
     return {
-      code: 1,
+      code: 0,
       msg: 'ok',
       data: updateRes
     }

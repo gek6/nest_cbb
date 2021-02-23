@@ -1,5 +1,8 @@
 <%- include('../common/common_header.ejs'); %>
-   <div>
+   <div style="background-color: #ffffff;padding: 20px;">
+      <fieldset class="layui-elem-field layui-field-title">
+         <legend>系统账号列表</legend>
+     </fieldset>
       <table class="layui-hide" id="accountList"></table>
 
       <div id="tableTools" style="display: none;">
@@ -24,7 +27,7 @@
                , {fixed: 'right', title:'操作', toolbar: '#tableTools', width:150}
             ]]
             , page: true
-            , height:$(document).height()-20
+            , height:$(document).height()-110
             ,line:'line'
          });
       });
