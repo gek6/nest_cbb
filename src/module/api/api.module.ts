@@ -8,12 +8,15 @@ import { UserSchema } from '../../schemas/user.schema';
 import { AddressSchema } from '../../schemas/address.schema';
 import { PetSchema } from "../../schemas/pet.schema"
 import { WorkerSchema } from "../../schemas/worker.schema"
+import { RechargeSchema } from "../../schemas/recharge.schema"
+
 // 服务
 import { UserService } from '../../service/user/user.service';
 import { AddressService } from '../../service/address/address.service';
 import { JwtAuthService } from '../../service/jwt-auth/jwt-auth.service';
 import { PetService } from "../../service/pet/pet.service"
 import { WorkerService } from "../../service/worker/worker.service"
+import { RechargeService } from "../../service/recharge/recharge.service"
 
 // 控制器
 import { AddressController } from './wxmp/address/address.controller';
@@ -30,6 +33,8 @@ import { PayController } from './wxmp/pay/pay.controller';
       { name: 'Address', schema: AddressSchema, collection: 'address' },
       { name: 'Pet', schema: PetSchema, collection: 'pet' },
       { name: 'Worker', schema: WorkerSchema, collection: 'worker' },
+      { name: 'Recharge', schema: RechargeSchema, collection: 'recharge' },
+      
     ])
     , JwtModule.register({
       secret: 'lane-yb',
@@ -42,7 +47,8 @@ import { PayController } from './wxmp/pay/pay.controller';
     JwtAuthService,
     AddressService,
     PetService,
-    WorkerService
+    WorkerService,
+    RechargeService
   ],
   exports: [JwtAuthService],
   controllers: [UserController, AddressController, PetController, WorkerController, SignController, PayController],

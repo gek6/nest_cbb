@@ -7,13 +7,25 @@ import { MongooseModule } from '@nestjs/mongoose';
 // 导入 权鉴 中间件
 import { AuthMiddleware } from './middleware/admin/auth.middleware';
 import { ApiMiddleware } from './middleware/token/api.middleware';
-import { PhoneMsgService } from './service/phone-msg/phone-msg.service';
 import { CallbackController } from './module/callback/callback.controller';
-
+import { CallbackService } from './service/callback/callback.service';
+import { RechargeSchema } from "./schemas/recharge.schema"
+import { UserSchema } from "./schemas/user.schema"
 @Module({
-  imports: [AdminModule, DefaultModule, ApiModule, MongooseModule.forRoot('mongodb://82.156.165.162:27017/nest_cbb', { 'useFindAndModify': false })],
-  providers: [PhoneMsgService],
+  imports: [
+    AdminModule,
+    DefaultModule,
+    ApiModule,
+    MongooseModule.forRoot('mongodb://82.156.165.162:27017/nest_cbb', { 'useFindAndModify': false }),
+    MongooseModule.forFeature([
+  
+      { name: 'Recharge', schema: RechargeSchema, collection: 'recharge' },
+      { name: 'User', schema: UserSchema, collection: 'user' },
+      
+    ])
+  ],
   controllers: [CallbackController],
+  providers: [CallbackService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
