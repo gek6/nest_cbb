@@ -37,8 +37,12 @@ export class PetController {
   async __list(
     @Query('pageNum') pageNum: number = 1,
     @Query('pageSize') pageSize: number = 10,
+    @Request() req 
   ) {
+    let openid: string = req.tokenInfo['openid'];
+    let user = await this.userService.findByOpenid(openid);
     let list = await this.petService.list({
+      uid:user._id,
       pageNum,
       pageSize,
     });
@@ -61,6 +65,8 @@ export class PetController {
     summary: '新增宠物',
   })
   async __add(@Body() postData: PetDto, @Request() req) {
+ 
+     
     let openid: string = req.tokenInfo['openid'];
     let user = await this.userService.findByOpenid(openid);
     let address = await this.petService.add(user._id, postData);

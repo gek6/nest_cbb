@@ -17,6 +17,7 @@ import { JwtAuthService } from '../../service/jwt-auth/jwt-auth.service';
 import { PetService } from "../../service/pet/pet.service"
 import { WorkerService } from "../../service/worker/worker.service"
 import { RechargeService } from "../../service/recharge/recharge.service"
+import { PhoneMsgService } from "../../service/phone-msg/phone-msg.service"
 
 // 控制器
 import { AddressController } from './wxmp/address/address.controller';
@@ -25,6 +26,7 @@ import { WorkerController } from './wxmp/worker/worker.controller';
 import { UserController } from './wxmp/user/user.controller';
 import { SignController } from './qiniu/sign/sign.controller';
 import { PayController } from './wxmp/pay/pay.controller';
+import { PhoneMsgController } from './wxmp/phone-msg/phone-msg.controller';
 
 @Module({
   imports: [
@@ -34,7 +36,7 @@ import { PayController } from './wxmp/pay/pay.controller';
       { name: 'Pet', schema: PetSchema, collection: 'pet' },
       { name: 'Worker', schema: WorkerSchema, collection: 'worker' },
       { name: 'Recharge', schema: RechargeSchema, collection: 'recharge' },
-      
+
     ])
     , JwtModule.register({
       secret: 'lane-yb',
@@ -48,10 +50,11 @@ import { PayController } from './wxmp/pay/pay.controller';
     AddressService,
     PetService,
     WorkerService,
-    RechargeService
+    RechargeService,
+    PhoneMsgService
   ],
   exports: [JwtAuthService],
-  controllers: [UserController, AddressController, PetController, WorkerController, SignController, PayController],
+  controllers: [UserController, AddressController, PetController, WorkerController, SignController, PayController, PhoneMsgController],
 })
 
 export class ApiModule {

@@ -43,6 +43,7 @@ async function bootstrap() {
           name: 'Authorization',
           in:'header'
     })
+    
     .setBasePath("http://natapp.gek6.com")
     .setVersion('1.0')
 

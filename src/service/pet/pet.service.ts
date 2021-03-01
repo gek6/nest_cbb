@@ -31,7 +31,7 @@ export class PetService {
   async list(queryJson) {
 
     return this.petModel.paginate(
-      {},
+      { uid: queryJson.uid },
       {
         page: Number(queryJson.pageNum),
         limit: Number(queryJson.pageSize),
