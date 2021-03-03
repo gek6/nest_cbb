@@ -1,6 +1,9 @@
 import * as mongoose from 'mongoose';
 import { Schema } from 'mongoose';
 import * as mongoosePaginate  from "mongoose-paginate"
+/**
+ * 订单数据模型
+ */
 let modelSchema = new mongoose.Schema({
   // 订单号 数字类型
   'orderNum':Number,
@@ -9,7 +12,8 @@ let modelSchema = new mongoose.Schema({
   'uid':Schema.Types.ObjectId,
   // 上门服务的日期数组 数组中有每次服务的 信息对象
   'serviceDates':Array,
-
+  // 铲屎官信息快照
+  'worker_snapshot':'',
   
   // 账号状态 1 正常 -1冻结
   'status': {
