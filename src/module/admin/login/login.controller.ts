@@ -21,6 +21,7 @@ export class LoginController {
 
         let username: string = Body.username;
         let password: string = this.toolsService.MD5(Body.password);
+        console.log(password);
         let code: string = Body.code;
 
         if (!username) {
