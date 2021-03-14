@@ -1,0 +1,57 @@
+<%- include('../common/common_header.ejs'); %>
+   <div style="background-color: #ffffff;padding: 20px;">
+      <fieldset class="layui-elem-field layui-field-title">
+         <legend>地址列表</legend>
+     </fieldset>
+      <table class="layui-hide" id="tableDom"></table>
+
+      <div id="tableTools" style="display: none;">
+         <button class="layui-btn layui-btn-sm">禁用</button>
+      </div>
+   </div>
+   <style>
+      td .layui-table-cell {
+         height: 60px;
+         line-height: 60px;
+      }
+   </style>
+   <script>
+      layui.use('table', function () {
+         var table = layui.table;
+
+         table.render({
+            elem: '#tableDom'
+            , title: "铲屎官列表"
+            , url: '/admin/address/address-list-json'
+            , parseData: function (res) {
+
+               return {
+                  code: res.code,
+                  msg: res.msg,
+                  data: res.data.docs,
+                  count: res.data.total
+               }
+            }
+            , id: "userTable"
+            , cols: [[
+               { field: '_id', width: 240, title: 'ID', }
+       
+               , { field: 'name', width: 100, title: '姓名', sort: true }
+               , { field: 'phone', width: 160, title: '手机号' }
+               , { field: 'province', width: 160, title: '省' }
+               , { field: 'city', width: 160, title: '市' }
+               , { field: 'district', width: 160, title: '区' }
+               , { field: 'address_detail', width: 160, title: '详细地址' }
+
+
+
+               , { fixed: 'right', title: '操作', toolbar: '#tableTools' }
+            ]]
+            , page: true
+            , height: $(document).height() -110
+            , line: 'line'
+         });
+
+         table.resize('userTable');
+      });
+   </script>

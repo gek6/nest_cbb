@@ -38,4 +38,15 @@ export class PetService {
       },
     );
   }
+  // 分页查询 列表
+  async adminList(queryJson) {
+
+    return this.petModel.paginate(
+        {},
+        {
+          page: Number(queryJson.pageNum),
+          limit: Number(queryJson.pageSize),
+        },
+    );
+  }
 }
