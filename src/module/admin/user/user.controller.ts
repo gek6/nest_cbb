@@ -13,7 +13,7 @@ export class UserController {
   @Render("admin/mp-user/list")
   __userList(){
     return {
-      
+
     }
   }
 
@@ -21,15 +21,17 @@ export class UserController {
   async __userListApi(
     @Query('page') pageNum: number = 1,
     @Query('limit') pageSize: number = 10,
+    @Query('nickname') nickname: string = '',
   ){
 
     let list = await this.userService.list({
       pageNum,
-      pageSize
+      pageSize,
+      nickname
     })
 
-    console.log(list);
-    
+    // console.log(list);
+
     return {
       code:0,
       msg:'ok',

@@ -1,57 +1,88 @@
 <%- include('../common/common_header.ejs'); %>
-   <div style="background-color: #ffffff;padding: 20px;">
-      <fieldset class="layui-elem-field layui-field-title">
-         <legend>用户列表</legend>
-     </fieldset>
-      <table class="layui-hide" id="tableDom"></table>
+<div style="background-color: #ffffff;padding: 20px;">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>用户列表</legend>
+    </fieldset>
+    <form class="layui-form layui-form-pane" lay-filter="searchForm">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">昵称</label>
+                <div class="layui-input-inline" style="width: 140px;">
+                    <input type="text" name="nickname" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <button id="mpUserSearchBtn" type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">
+                    <i class="layui-icon layui-icon-search" style="font-size: 14px"></i>搜索
+                </button>
+            </div>
+        </div>
 
-      <div id="tableTools" style="display: none;">
-         <button class="layui-btn layui-btn-sm">禁用</button>
-      </div>
-   </div>
-   <style>
-      td .layui-table-cell {
-         height: 60px;
-         line-height: 60px;
-      }
-   </style>
-   <script>
-      layui.use('table', function () {
-         var table = layui.table;
+    </form>
+    <table class="layui-hide" id="tableDom"></table>
 
-         table.render({
-            elem: '#tableDom'
-            , title: "用户列表"
-            , url: '/admin/user/user-list-json'
-            , parseData: function (res) {
+    <div id="tableTools" style="display: none;">
+        <button class="layui-btn layui-btn-sm">禁用</button>
+        <button class="layui-btn layui-btn-sm">查看宠物</button>
+        <button class="layui-btn layui-btn-sm">查看地址</button>
+    </div>
+</div>
+<style>
+    td .layui-table-cell {
+        height: 60px;
+        line-height: 60px;
+    }
+</style>
+<script>
+  layui.use(['table', 'form'], function() {
+    var table = layui.table;
+    var form = layui.form;
 
-               return {
-                  code: res.code,
-                  msg: res.msg,
-                  data: res.data.docs,
-                  count: res.data.total
-               }
+    function renderTable(query) {
+      table.render({
+        elem: '#tableDom'
+        , title: "用户列表"
+        , where: query
+        , url: '/admin/user/user-list-json'
+        , parseData: function(res) {
+
+          return {
+            code: res.code,
+            msg: res.msg,
+            data: res.data.docs,
+            count: res.data.total
+          }
+        }
+        , id: "userTable"
+        , cols: [[
+          { field: '_id', width: 240, title: 'ID', }
+          , {
+            field: 'avatarUrl', title: '微信头像', width: 100
+            , templet: function(d) {
+              return ` <img style="width:55px;height:55px;" src="${d.avatarUrl}" alt="">`
             }
-            , id: "userTable"
-            , cols: [[
-               { field: '_id', width: 240, title: 'ID', }
-               , {
-                  field: 'avatarUrl', title: '微信头像', width: 100
-                  , templet: function (d) {
-                     return ` <img style="width:55px;height:55px;" src="${d.avatarUrl}" alt="">`
-                  }
-               }
-               , { field: 'nickName', width: 160, title: '昵称', sort: true }
-               , { field: 'money', width: 100, title: '账户余额' }
+          }
+          , { field: 'nickName', width: 160, title: '昵称', sort: true }
+          , { field: 'money', width: 100, title: '账户余额' }
 
 
-               , { fixed: 'right', title: '操作', toolbar: '#tableTools' }
-            ]]
-            , page: true
-            , height: $(document).height()-110
-            , line: 'line'
-         });
-
-         table.resize('userTable');
+          , { fixed: 'right', title: '操作', toolbar: '#tableTools' }
+        ]]
+        , page: true
+        , height: $(document).height() - 170
+        , line: 'line'
       });
-   </script>
+    }
+    var queryJson = form.val("searchForm")
+    renderTable(queryJson)
+    table.resize('userTable');
+
+    $("#mpUserSearchBtn").click(function(e) {
+      e.preventDefault();
+
+      var queryJson = form.val("searchForm")
+      console.log(queryJson);
+      renderTable(queryJson)
+    })
+  });
+</script>

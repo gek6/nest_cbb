@@ -3,6 +3,12 @@
       <fieldset class="layui-elem-field layui-field-title">
          <legend>系统账号列表</legend>
      </fieldset>
+
+      <!--<div class="layui-btn-group">-->
+      <!--   <button type="button" class="layui-btn">增加</button>-->
+      <!--   <button type="button" class="layui-btn ">编辑</button>-->
+      <!--   <button type="button" class="layui-btn">删除</button>-->
+      <!--</div>-->
       <table class="layui-hide" id="accountList"></table>
 
       <div id="tableTools" style="display: none;">
@@ -12,7 +18,7 @@
    <script>
       layui.use('table', function () {
          var table = layui.table;
-        
+
          table.render({
             elem: '#accountList'
             , url: '/admin/account/list-json'
@@ -23,7 +29,7 @@
                , { field: 'email', width: 200, title: '邮箱'}
                , { field: 'mobile', width: 200, title: '手机号'}
                , { field: 'status', width: 200, title: '状态'}
-               
+
                , {fixed: 'right', title:'操作', toolbar: '#tableTools', width:150}
             ]]
             , page: true

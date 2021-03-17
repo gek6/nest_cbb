@@ -14,7 +14,7 @@ export class UserService {
 
   // 通过微信服务器登录
   async wxmpDoLogin(code) {
-  
+
     let wxUrl = `https://api.weixin.qq.com/sns/jscode2session?appid=${APPID}&secret=${SECRET}&js_code=${code}&grant_type=authorization_code`;
 
 
@@ -73,8 +73,13 @@ export class UserService {
 
   // 分页查询 用户列表
   async list(queryJson){
+    let nickname = decodeURIComponent(queryJson.nickname) || ""
     return this.userModel.paginate(
-      {},
+      {
+        nickName: {
+          $regex:nickname
+        }
+      },
       {
         page: Number(queryJson.pageNum),
         limit: Number(queryJson.pageSize),
